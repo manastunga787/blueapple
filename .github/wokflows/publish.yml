@@ -1,31 +1,41 @@
-name: Publish Package
-
+name: Deploy Henio
 on:
   push:
     branches:
       - main
-      - master
-    tags:
-      - "v*.*.*"
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-
+  deploy:
+    name: Deploy Henio with bun
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: install nodejs
         uses: actions/setup-node@v2
         with:
-          node-version: "20"
-          registry-url: "https://registry.npmjs.org"
+          node-version: 20.x
+
+      - name: executes multiline script
+        run: |
+          node -v
+          npm -v
+          yarn -v
+          bun -v
+
+      - name: list of files after checkout
+        run: |
+          pwd
+          ls -a
 
       - name: Install dependencies
         run: npm install
 
       - name: Publish to npm
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # - name: Run build
+      #   run: bun run build
