@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Authenticate with npm registry
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
       - name: executes multiline script
         run: |
           node -v
@@ -32,10 +35,8 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - run: npm ci
-      - uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
       # - name: Run build
       #   run: bun run build
