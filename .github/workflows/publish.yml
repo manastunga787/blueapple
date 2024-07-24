@@ -18,7 +18,7 @@ jobs:
           node-version: 20.x
 
       - name: Authenticate with npm registry
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=npm_${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: executes multiline script
         run: |
